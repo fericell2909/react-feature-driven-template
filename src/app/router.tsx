@@ -1,33 +1,31 @@
-import { createBrowserRouter } from 'react-router-dom';
-import  PublicLayout  from '@/components/layout/PublicLayout';
-import AuthenticatedLayout from '@/components/layout/AuthenticatedLayout';
-import { ProtectedLayout } from '../routes/ProtectedLayout';
-import { authRoutes } from '@/features/auth/routes';
-import { dashboardRoutes } from '@/features/dashboard/routes';
+import { createBrowserRouter } from "react-router-dom";
+import PublicLayout from "@/components/layout/PublicLayout";
+import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
+import { ProtectedLayout } from "../routes/ProtectedLayout";
+import { authRoutes } from "@/features/auth/routes";
+import { dashboardRoutes } from "@/features/dashboard/routes";
+import { NotFoundPage } from "@/pages/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <h1>Landing Page</h1>,
   },
   {
     element: <PublicLayout />,
-    children: [
-      authRoutes,
-    ],
+    children: [authRoutes],
   },
   {
     element: (
       <ProtectedLayout>
-        <AuthenticatedLayout /> {/* El layout que solo ven los autenticados (sidebar, etc.) */}
+        <AuthenticatedLayout />{" "}
+        {/* El layout que solo ven los autenticados (sidebar, etc.) */}
       </ProtectedLayout>
     ),
-    children: [
-      dashboardRoutes,
-    ],
+    children: [dashboardRoutes],
   },
   {
-    path: '*',
-    element: <div>404 - Página no encontrada</div>,
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
