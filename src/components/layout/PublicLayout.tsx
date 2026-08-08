@@ -1,15 +1,23 @@
-import { ReactNode } from 'react';
-import { Outlet } from 'react-router-dom'; // <-- 1. Importante para renderizar las rutas hijas
+import type { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Language } from '@/components/language/Language'
 
 interface PublicLayoutProps {
-  children?: ReactNode; // <-- 2. Hacemos que children sea opcional ya que React Router los pasa dinámicamente
+  children?: ReactNode;
 }
 
-const PublicLayout = ({ children }: PublicLayoutProps) => {
+export const PublicLayout = ({ children }: PublicLayoutProps) => {
+  
+
   return (
-    <>
-      {children || <Outlet />} 
-    </>
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <header className="w-full bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-xs">
+        <Language />
+      </header>
+      <main className="flex-1 flex flex-col">
+        {children || <Outlet />}
+      </main>
+    </div>
   );
 };
 

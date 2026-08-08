@@ -5,11 +5,12 @@ import { ProtectedLayout } from "../routes/ProtectedLayout";
 import { authRoutes } from "@/features/auth/routes";
 import { dashboardRoutes } from "@/features/dashboard/routes";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import LandingPage from "@/pages/LandingPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1>Landing Page</h1>,
+    element: <LandingPage />,
   },
   {
     element: <PublicLayout />,
