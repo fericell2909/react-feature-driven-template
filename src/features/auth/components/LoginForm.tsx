@@ -1,0 +1,84 @@
+// src/features/auth/components/LoginForm.tsx
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { useTranslation } from 'react-i18next';
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export const LoginForm = () => {
+  const { t, i18n } = useTranslation('auth');
+  const currentLang = i18n.language;
+
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors, isSubmitting, submitCount },
+  } = useForm<LoginFormData>();
+
+  useEffect(() => {
+    if (submitCount > 0) {
+      trigger();
+    }
+  }, [currentLang, trigger, submitCount]);
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      console.log('Datos enviados:', data);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  };
+
+  return (
+    <div key={currentLang} className="w-full">
+      <h2 className="text-2xl font-bold mb-6 text-center">{t('LoginForm_Title')}</h2>
+      
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4 text-left" noValidate>
+        <Input
+          id="email"
+          label={t('LoginForm_Email')}
+          type="email"
+          placeholder="tu@correo.com"
+          error={errors.email}
+          {...register('email', {
+            required: t('LoginForm_Email_Required'),
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: t('LoginForm_Email_Invalid'),
+            },
+          })}
+        />
+
+        <Input
+          id="password"
+          label={t('LoginForm_Password')}
+          type="password"
+          placeholder="••••••••"
+          error={errors.password}
+          {...register('password', {
+            required: t('LoginForm_Password_Required'),
+            minLength: {
+              value: 6,
+              message: t('LoginForm_Password_MinLength'),
+            },
+          })}
+        />
+
+        <div className="pt-2">
+          <Button type="submit" isLoading={isSubmitting} className="cursor-pointer">
+            {t('LoginForm_Submit')}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;

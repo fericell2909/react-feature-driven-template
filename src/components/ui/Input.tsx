@@ -2,6 +2,7 @@
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import type { FieldError } from 'react-hook-form';
+import { Label } from './Label';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -12,9 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, id, error, className = '', type = 'text', ...props }, ref) => {
     return (
       <div className="w-full text-left space-y-1">
-        <label className="block text-sm font-medium text-slate-700" htmlFor={id}>
-          {label}
-        </label>
+        <Label htmlFor={id}>{label}</Label>
         <input
           ref={ref}
           id={id}
