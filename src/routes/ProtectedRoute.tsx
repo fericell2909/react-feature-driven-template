@@ -1,18 +1,17 @@
 import type { ReactNode } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth }  from '@/hooks/useAuth'; 
+import { useAuth }  from '@/app/context/AuthContext'; 
 
-interface ProtectedLayoutProps {
+interface ProtectedRouteProps {
   children?: ReactNode;
 }
 
-export const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
+export const ProtectedRoute= ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }
 
-  // Si envuelve a otro componente (como AuthenticatedLayout), lo renderiza. Si no, usa <Outlet />
   return children ? <>{children}</> : <Outlet />;
 };

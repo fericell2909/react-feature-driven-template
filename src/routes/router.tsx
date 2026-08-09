@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import PublicLayout from "@/components/layout/PublicLayout";
 import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
-import { ProtectedLayout } from "../routes/ProtectedLayout";
+import { ProtectedRoute } from "./ProtectedRoute";
 import { authRoutes } from "@/features/auth/routes";
 import { dashboardRoutes } from "@/features/dashboard/routes";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import LandingPage from "@/pages/LandingPage";
+import { PublicRoute } from "@/routes/PublicRoute";
 
 export const router = createBrowserRouter([
   {
@@ -13,15 +14,19 @@ export const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    element: <PublicLayout />,
-    children: [authRoutes],
+    element: <PublicRoute />,
+    children: [
+      {
+        element: <PublicLayout />,
+        children: [authRoutes],
+      },
+    ],
   },
   {
     element: (
-      <ProtectedLayout>
-        <AuthenticatedLayout />{" "}
-        {/* El layout que solo ven los autenticados (sidebar, etc.) */}
-      </ProtectedLayout>
+      <ProtectedRoute>
+        <AuthenticatedLayout />
+      </ProtectedRoute>
     ),
     children: [dashboardRoutes],
   },

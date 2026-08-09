@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/app/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormData {
   email: string;
@@ -13,6 +15,8 @@ interface LoginFormData {
 export const LoginForm = () => {
   const { t, i18n } = useTranslation('auth');
   const currentLang = i18n.language;
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,8 +33,22 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      console.log('Datos enviados:', data);
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      
+      const fakeToken = "jwt-token-abc123xyz";
+      const fakeUser = {
+        id: "1",
+        email: data.email,
+        name: "Usuario de Prueba",
+      };
+
+      login(fakeUser, fakeToken);
+
+      console.log('Inicio de sesión exitoso con:', data);
+
+      navigate('/dashboard', { replace: true });
+
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
     }
