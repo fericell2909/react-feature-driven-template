@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginForm from '../components/LoginForm';
+import PATHS from '@/routes/paths';
 
 const LoginPage = () => {
   const { t } = useTranslation('auth');
@@ -13,7 +14,7 @@ const LoginPage = () => {
         <div className="mt-6 text-sm text-gray-600">
           {t('LoginPage_NoAccount')}{' '}
           <Link
-            to="/auth/register"
+            to={PATHS.auth.register}
             className="font-medium text-blue-600 hover:underline"
           >
             {t('LoginPage_RegisterLink')}
