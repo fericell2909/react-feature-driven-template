@@ -16,7 +16,7 @@ export const useLogin = () => {
 
       const { ...userData } = response;
 
-      login(userData as unknown as User, response.accessToken, response.refreshToken);
+      login(userData as unknown as User, response?.accessToken, response?.refreshToken);
 
       navigate(PATHS.dashboard.dashboard, { replace: true });
     },

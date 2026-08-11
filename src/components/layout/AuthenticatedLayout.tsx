@@ -1,8 +1,8 @@
-// src/components/layout/AuthenticatedLayout.tsx
 import { useState, type ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Language } from '@/components/language/Language';
 import { SidebarMenu } from '@/components/layout/SidebarMenu';
+import { useAuth } from '@/app/hooks/useAuth';
 
 interface AuthenticatedLayoutProps {
   children?: ReactNode; 
@@ -11,7 +11,7 @@ interface AuthenticatedLayoutProps {
 export const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-
+  const { displayName } = useAuth();
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -30,7 +30,7 @@ export const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
             </svg>
           </button>
 
-          <h1 className="text-xl font-bold tracking-wide">My App</h1>
+          <h1 className="text-xl font-bold tracking-wide">Hola, {displayName()}</h1>
         </div>
 
         <div>

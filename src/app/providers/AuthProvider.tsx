@@ -101,8 +101,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.clear();
   }, []);
 
+  const displayName = useCallback(() => {
+    if (user) {
+      return user?.displayName || user?.username;
+    }
+    return "Usuario";
+  }, [user]);
+
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout , displayName}}>
       {children}
     </AuthContext.Provider>
   );
