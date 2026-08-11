@@ -1,28 +1,24 @@
-// src/features/auth/components/LoginForm.tsx
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/app/context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import type { LoginCredentials } from '@/features/auth/interfaces/auth.types';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+type LoginFormData = LoginCredentials;
 
 export const LoginForm = () => {
   const { t, i18n } = useTranslation('auth');
   const currentLang = i18n.language;
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  
+  const { mutate: login, isPending, error } = useLogin();
 
   const {
     register,
     handleSubmit,
     trigger,
-    formState: { errors, isSubmitting, submitCount },
+    formState: { errors, submitCount },
   } = useForm<LoginFormData>();
 
   useEffect(() => {
@@ -31,33 +27,19 @@ export const LoginForm = () => {
     }
   }, [currentLang, trigger, submitCount]);
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      const fakeToken = "jwt-token-abc123xyz";
-      const fakeUser = {
-        id: "1",
-        email: data.email,
-        name: "Usuario de Prueba",
-      };
-
-      login(fakeUser, fakeToken);
-
-      console.log('Inicio de sesión exitoso con:', data);
-
-      navigate('/dashboard', { replace: true });
-
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-    }
+  const onSubmit = (data: LoginFormData) => {
+    login(data);
   };
 
   return (
     <div key={currentLang} className="w-full">
       <h2 className="text-2xl font-bold mb-6 text-center">{t('LoginForm_Title')}</h2>
-      
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+          {error.message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4 text-left" noValidate>
         <Input
           id="email"
@@ -90,7 +72,7 @@ export const LoginForm = () => {
         />
 
         <div className="pt-2">
-          <Button type="submit" isLoading={isSubmitting} className="cursor-pointer">
+          <Button type="submit" isLoading={isPending} className="cursor-pointer">
             {t('LoginForm_Submit')}
           </Button>
         </div>

@@ -1,4 +1,4 @@
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth } from '@/app/hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import PATHS from '@/routes/paths';
 

@@ -2,15 +2,28 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/router';
-import { AuthProvider } from './app/context/AuthContext';
+import { AuthProvider } from './app/providers/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './app/i18n/i18n';
 import './index.css'
 
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
