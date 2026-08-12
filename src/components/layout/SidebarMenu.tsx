@@ -36,6 +36,13 @@ export const SidebarMenu = ({ onItemClick }: SidebarMenuProps) => {
         >
           Users
         </Link>
+        <Link 
+          to={PATHS.users.list}
+          onClick={onItemClick}
+          className="block px-3 py-2 rounded-lg text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-600 transition-colors"
+        >
+          Users
+        </Link>
         <button 
           type="button"
           onClick={(e) => onClickLogout(e)}

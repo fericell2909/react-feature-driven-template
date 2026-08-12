@@ -4,6 +4,7 @@ import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { authRoutes } from "@/features/auth/routes";
 import { dashboardRoutes } from "@/features/dashboard/routes";
+import { userRoutes } from "@/features/users/routes/index.tsx";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import LandingPage from "@/pages/LandingPage";
 import { PublicRoute } from "@/routes/PublicRoute";
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
         <AuthenticatedLayout />
       </ProtectedRoute>
     ),
-    children: [dashboardRoutes],
+    children: [dashboardRoutes, userRoutes],
   },
   {
     path: "*",

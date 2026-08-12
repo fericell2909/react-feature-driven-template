@@ -1,14 +1,14 @@
-// src/services/apiClient.ts
 import Cookies from 'js-cookie';
-import { AUTH_TOKEN_COOKIE_NAME , URL_API } from '@/app/constants/environment'; 
+import { AUTH_TOKEN_COOKIE_NAME, URL_API } from '@/app/constants/environment'; 
 
 interface RequestOptions extends RequestInit {
   requiresAuth?: boolean;
+  params?: Record<string, string | number | boolean>; // <-- Añadido soporte para params
 }
 
 class ApiClient {
   private async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-    const { requiresAuth = false, headers, body, ...customOptions } = options;
+    const { requiresAuth = false, headers, body, params, ...customOptions } = options;
 
     const defaultHeaders: HeadersInit = {
       'Content-Type': 'application/json',
@@ -22,18 +22,31 @@ class ApiClient {
       }
     }
 
+    // Construcción automática de Query Params para Fetch
+    let url = `${URL_API}${endpoint}`;
+    if (params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+    }
+
     const config: RequestInit = {
       ...customOptions,
       headers: defaultHeaders,
       body: body && typeof body === 'object' ? JSON.stringify(body) : body,
     };
 
-    const response = await fetch(`${URL_API}${endpoint}`, config);
-
+    const response = await fetch(url, config);
 
     if (!response.ok) {
       if (response.status === 401) {
-
         console.warn('Sesión expirada o no autorizada (401)');
       }
 

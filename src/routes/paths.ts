@@ -9,6 +9,11 @@ const PATHS = {
     profile: '/dashboard/profile',
     settings: '/dashboard/settings',
   },
+  users: {
+    list: 'users',
+    create: 'users/create',
+    edit: (id: number) => `users/edit/${id}`,
+  },
 }
 
 
